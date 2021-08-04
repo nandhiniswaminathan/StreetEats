@@ -1,4 +1,6 @@
 import os
+import json
+import requests
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
@@ -7,6 +9,21 @@ from werkzeug.security import check_password_hash
 
 load_dotenv()
 app = Flask(__name__)
+api_key = "H0gpARItFwi0CmwA85fzscqaNw7HA2r87qhsPMpLyp3La1mVW4DOM-sfI8obciPj4YbpRXpkfnAYS8wnLEvErkTXay7dqsytK68q7dLVxX39lmQyQ9ZdUbj6Te4KYXYx"
+API_HOST = "https://www.yelp.com/developers/documentation/v3/business_search"
+headers = {'Authorization': 'Bearer {}'.format(api_key)}
+search_api_url = 'https://api.yelp.com/v3/businesses/search'
+
+
+@app.route("/testscrape", methods=["GET", "POST"])
+def testscrape():
+    params = {'term': 'coffee',
+            'location': 'Toronto, Ontario',
+            'limit': 1}
+    response = requests.get(search_api_url, headers=headers, params=params, timeout=5)
+    business_data = response.json()
+    print(response.url)
+    return json.dumps(business_data)
 
 
 @app.route("/")
