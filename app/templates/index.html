@@ -2,7 +2,23 @@
 <html lang="en">
 
 <body>
-<h1>Hey besties</h1>
+<h1>StreetEats</h1>
+
+<form action="/" method="POST">
+<input class="input" type="text" id="type" name="type" placeholder="Category" />
+<input type="submit" class="btn" id="submit" name="submit" value="search" />
+</form>
+
+{% block content %}
+<div>
+    {% for entry in data["businesses"] %}
+        <p>{{entry['name']}}</p>   
+        <span>Rating: {{entry['rating']}}</span> 
+        <span>Price: {{entry['price']}}</span> <!-- user "distance" for distance from user to place -->
+    
+    {% endfor %}
+</div>
+{% endblock content %}
 
 
 </body>
