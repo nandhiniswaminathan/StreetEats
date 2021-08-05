@@ -9,7 +9,7 @@ from werkzeug.security import check_password_hash
 
 load_dotenv()
 app = Flask(__name__)
-api_key = "H0gpARItFwi0CmwA85fzscqaNw7HA2r87qhsPMpLyp3La1mVW4DOM-sfI8obciPj4YbpRXpkfnAYS8wnLEvErkTXay7dqsytK68q7dLVxX39lmQyQ9ZdUbj6Te4KYXYx"
+api_key = ""
 API_HOST = "https://www.yelp.com/developers/documentation/v3/business_search"
 headers = {'Authorization': 'Bearer {}'.format(api_key)}
 search_api_url = 'https://api.yelp.com/v3/businesses/search'
