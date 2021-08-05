@@ -5,30 +5,59 @@ from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from flask import session
 
 
 load_dotenv()
 app = Flask(__name__)
-api_key = "H0gpARItFwi0CmwA85fzscqaNw7HA2r87qhsPMpLyp3La1mVW4DOM-sfI8obciPj4YbpRXpkfnAYS8wnLEvErkTXay7dqsytK68q7dLVxX39lmQyQ9ZdUbj6Te4KYXYx"
-API_HOST = "https://www.yelp.com/developers/documentation/v3/business_search"
-headers = {'Authorization': 'Bearer {}'.format(api_key)}
-search_api_url = 'https://api.yelp.com/v3/businesses/search'
+app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 
+# create user table
+class UserModel(db.Model):
+    __tablename__ = "users"
+    #Add user id, username, password columns
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String())
+    password = db.Column(db.String())
+    #todo add column for restaurant lists, friend list
 
-@app.route("/testscrape", methods=["GET", "POST"])
-def testscrape():
-    params = {'term': 'coffee',
-            'location': 'Toronto, Ontario',
-            'limit': 1}
-    response = requests.get(search_api_url, headers=headers, params=params, timeout=5)
-    business_data = response.json()
-    print(response.url)
-    return json.dumps(business_data)
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+
+class BusinessList(db.Model):
+    __tablename__ = "BusinessLists"
+    #Add id of list, name of list, business_id columns
+    list_name = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.Integer)
+    #todo add column for restaurant lists, friend list
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def __repr__(self):
+        return f"<User {self.username}>"
+
+load_dotenv()
+db.create_all()
 
 
 @app.route("/")
 def index():
     return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
+
+
+# create health end point
+@app.route("/health")
+def check():
+    return "Working"
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -73,7 +102,7 @@ def login():
 
         if error is None:
             #Return home page upon successful registration, assuming it's "home.html"
-            return render_template("home.html")
+            return render_template("index.html")
         else:
             return error, 418
 
