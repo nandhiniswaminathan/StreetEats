@@ -1,6 +1,6 @@
 import os
 import json
-import requests
+# import requests
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
@@ -9,13 +9,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import session
 from flask_migrate import Migrate
 
-
-load_dotenv()
 app = Flask(__name__)
+        
 app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+friends = db.Table('friends',
+    db.Column("user_id_fk", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
+    db.Column("friend_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True)
+)
 
 # create user table
 class UserModel(db.Model):
@@ -26,6 +30,12 @@ class UserModel(db.Model):
     password = db.Column(db.String())
     lists = db.relationship("Lists", backref="List_OwnerID")
     #User has lists that refers to Lists db
+    friendship = db.relationship("UserModel",
+                    secondary=friends,
+                    primaryjoin=user_id==friends.c.user_id_fk,
+                    secondaryjoin=user_id==friends.c.friend_id,
+                    backref="followed_by"
+    )
 
     def __init__(self, username, password):
         self.username = username
@@ -77,10 +87,18 @@ class BusinessList(db.Model):
 db.create_all()
 
 
+# class FriendModel(db.Model):
+#     ___tablename___ = "friends"
+
+#     user_id_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+#     friend_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+
+load_dotenv()
+db.create_all()
+
 @app.route("/")
 def index():
     return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
-
 
 # create health end point
 @app.route("/health")
