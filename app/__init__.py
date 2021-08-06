@@ -7,14 +7,15 @@ from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask import session
+from flask_migrate import Migrate
 
 
 load_dotenv()
 app = Flask(__name__)
-<<<<<<< HEAD
 app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # create user table
 class UserModel(db.Model):
@@ -23,7 +24,8 @@ class UserModel(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String())
     password = db.Column(db.String())
-    #todo add column for restaurant lists, friend list
+    lists = db.relationship("Lists", backref="List_OwnerID")
+    #User has lists that refers to Lists db
 
     def __init__(self, username, password):
         self.username = username
@@ -31,28 +33,47 @@ class UserModel(db.Model):
 
     def __repr__(self):
         return f"<User {self.username}>"
+
+class Lists(db.Model):
+    __tablename__ = "lists"
+    #Add id number of user who owns list, name of list, list_id number columns
+    list_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    list_name = db.Column(db.String())
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    businesses = db.relationship("BusinessList", backref="Business_ListID")
+    #List db has businesses that refers to BusinessList/businesses db
+
+### Need Help with where / how to connect and assign attributes for each user here
+    def __init__(self, list_id, list_name, user_id):
+        self.list_id = list_id
+        self.list_name = list_name
+        #self.user_id = user_id
+
+    #def __repr__(self):
+    #    return f"User {username} has list {}." # confused here
+    #    self.business_id = #RETRIEVE from api
+    #    self.business_name = #Restrieve id from api then retrieve name
+    #    self.list_id = #Retrieve from lists db
 
 class BusinessList(db.Model):
-    __tablename__ = "BusinessLists"
-    #Add id of list, name of list, business_id columns
-    list_name = db.Column(db.Integer, primary_key=True)
-    business_id = db.Column(db.Integer)
-    #todo add column for restaurant lists, friend list
+    __tablename__ = "businesses"
+    #Add id number of list, name of business, business_id columns
+    business_id = db.Column(db.Integer, primary_key=True)
+    business_name = db.Column(db.String())
+    list_id = db.Column(db.Integer, db.ForeignKey("lists.list_id"))
 
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
+### Need Help with where / how to connect and assign attributes for each business here
+    def __init__(self, business_id, business_name, list_id):
+        self.business_id = business_id
+        self.business_name = business_name
+        #self.list_id = list_id
 
-    def __repr__(self):
-        return f"<User {self.username}>"
-=======
-api_key = ""
-API_HOST = "https://www.yelp.com/developers/documentation/v3/business_search"
-headers = {'Authorization': 'Bearer {}'.format(api_key)}
-search_api_url = 'https://api.yelp.com/v3/businesses/search'
->>>>>>> 7c9a7efe43414915ed16c6d616280898573dccba
+    #def __repr__(self):
+    #    return f"User {username} has list {}." # confused here
+    #    self.business_id = #RETRIEVE from api
+    #    self.business_name = #Restrieve id from api then retrieve name
+    #    self.list_id = #Retrieve from lists db
 
-load_dotenv()
 db.create_all()
 
 
@@ -108,7 +129,7 @@ def login():
             error = "Incorrect password."
 
         if error is None:
-            #Return home page upon successful registration, assuming it's "home.html"
+            #Return home page upon successful registration, assuming it's "index.html"
             return render_template("index.html")
         else:
             return error, 418
