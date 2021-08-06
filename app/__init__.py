@@ -11,6 +11,7 @@ from flask import session
 
 load_dotenv()
 app = Flask(__name__)
+<<<<<<< HEAD
 app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
@@ -44,6 +45,12 @@ class BusinessList(db.Model):
 
     def __repr__(self):
         return f"<User {self.username}>"
+=======
+api_key = ""
+API_HOST = "https://www.yelp.com/developers/documentation/v3/business_search"
+headers = {'Authorization': 'Bearer {}'.format(api_key)}
+search_api_url = 'https://api.yelp.com/v3/businesses/search'
+>>>>>>> 7c9a7efe43414915ed16c6d616280898573dccba
 
 load_dotenv()
 db.create_all()
