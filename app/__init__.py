@@ -17,6 +17,12 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+friends = db.Table('friends',
+    db.Column("user_id_fk", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
+    db.Column("friend_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True)
+)
+
+
 # create user table
 class UserModel(db.Model):
     __tablename__ = "users"
@@ -26,6 +32,12 @@ class UserModel(db.Model):
     password = db.Column(db.String())
     lists = db.relationship("Lists", backref="List_OwnerID")
     #User has lists that refers to Lists db
+    friendship = db.relationship("UserModel",
+                    secondary=friends,
+                    primaryjoin=user_id==friends.c.user_id_fk,
+                    secondaryjoin=user_id==friends.c.friend_id,
+                    backref="followed_by"
+    )
 
     def __init__(self, username, password):
         self.username = username
@@ -76,6 +88,12 @@ class BusinessList(db.Model):
 
 db.create_all()
 
+
+# class FriendModel(db.Model):
+#     ___tablename___ = "friends"
+
+#     user_id_fk = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+#     friend_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
 
 @app.route("/")
 def index():
