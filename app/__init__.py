@@ -78,8 +78,7 @@ def index():
         url=os.getenv("URL"),
         data=business_data,
     )
-  
-    return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
+    # return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
 
 # create health end point
 @app.route("/health")
@@ -132,7 +131,7 @@ def login():
 
         if error is None:
             #Return home page upon successful registration, assuming it's "index.html"
-            return render_template("index.html")
+            return index()
         else:
             return error, 418
 
