@@ -4,3 +4,5 @@ __pycache__
 flask.sqlite
 venv
 apiKey.*
+apiKey
+.env

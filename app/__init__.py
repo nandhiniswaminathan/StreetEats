@@ -2,7 +2,6 @@ import os
 from flask import Flask, render_template
 from dotenv import load_dotenv
 import requests
-from apiKey import api_Key_yelp
 from flask import request
 
 
@@ -13,19 +12,19 @@ app = Flask(__name__)
 ENDPOINT_IP = "https://api.ipify.org?format=json"  # method: GET
 response_ip = requests.get(url=ENDPOINT_IP)
 ip = response_ip.json()["ip"]
-print(ip)
+# print(ip)
 
 # API #2
 ENDPOINT_LOC = f"https://ipinfo.io/{ip}?token=e5705a55652e77"  # method: GET
 response_loc = requests.get(url=ENDPOINT_LOC)
-print(response_loc)
+# print(response_loc)
 
 response_new = response_loc.json()["loc"].split(",")
 lat, long = response_new[0], response_new[1]
 
 
 client_id = "_yVwgo9pbZN4s883GVMXyg"
-API_KEY_YELP = api_Key_yelp
+API_KEY_YELP = os.getenv('APIKEYYELP')
 ENDPOINT_YELP = "https://api.yelp.com/v3/businesses/search"  # method: GET
 HEADERS_YELP = {"Authorization": "bearer %s" % API_KEY_YELP}
 
@@ -80,7 +79,7 @@ def index():
         url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
     )
     business_data = response.json()
-    print(business_data)
+    # print(business_data)
 
     return render_template(
         "index.html",
