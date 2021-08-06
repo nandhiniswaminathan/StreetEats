@@ -5,3 +5,4 @@ flask.sqlite
 venv
 python3-virtualenv/
 .DS_Store
+
