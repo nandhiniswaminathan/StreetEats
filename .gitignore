@@ -1,8 +1,7 @@
-.venv
+.env
 __pycache__
 *.pyc
 flask.sqlite
 venv
-apiKey.*
-apiKey
-.env
+python3-virtualenv/
+.DS_Store
