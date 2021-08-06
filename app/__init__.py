@@ -10,7 +10,7 @@ from flask import session
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-        
+
 app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
