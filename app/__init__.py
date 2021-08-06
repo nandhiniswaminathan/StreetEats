@@ -3,30 +3,16 @@ from flask import Flask, render_template
 from dotenv import load_dotenv
 import requests
 from flask import request
+from . import api
+from app.api import api_run1
+from app.api import apiYelp
 
 
 load_dotenv()
 app = Flask(__name__)
 
-# API #1
-ENDPOINT_IP = "https://api.ipify.org?format=json"  # method: GET
-response_ip = requests.get(url=ENDPOINT_IP)
-ip = response_ip.json()["ip"]
-# print(ip)
-
-# API #2
-ENDPOINT_LOC = f"https://ipinfo.io/{ip}?token=e5705a55652e77"  # method: GET
-response_loc = requests.get(url=ENDPOINT_LOC)
-# print(response_loc)
-
-response_new = response_loc.json()["loc"].split(",")
-lat, long = response_new[0], response_new[1]
-
-
-client_id = "_yVwgo9pbZN4s883GVMXyg"
-API_KEY_YELP = os.getenv('APIKEYYELP')
-ENDPOINT_YELP = "https://api.yelp.com/v3/businesses/search"  # method: GET
-HEADERS_YELP = {"Authorization": "bearer %s" % API_KEY_YELP}
+lat, long = api_run1()
+ENDPOINT_YELP, HEADERS_YELP = apiYelp()
 
 
 class user_category:
@@ -43,6 +29,7 @@ class user_category:
 #         self.name = name
 #         self.businessID = businessID
 
+
 # restaurants
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -51,7 +38,6 @@ def index():
     city = None
 
     if request.method == "POST":
-
         city = request.form.get("city")
         selection = request.form.get("type")
         S = user_category(selection, testLocation)
