@@ -12,7 +12,7 @@ app = Flask(__name__)
 # API #1
 ENDPOINT_IP = "https://api.ipify.org?format=json"  # method: GET
 response_ip = requests.get(url=ENDPOINT_IP)
-ip = response_ip.json()["ip"] 
+ip = response_ip.json()["ip"]
 print(ip)
 
 # API #2
@@ -20,9 +20,8 @@ ENDPOINT_LOC = f"https://ipinfo.io/{ip}?token=e5705a55652e77"  # method: GET
 response_loc = requests.get(url=ENDPOINT_LOC)
 print(response_loc)
 
-response_new = response_loc.json()['loc'].split(",")
+response_new = response_loc.json()["loc"].split(",")
 lat, long = response_new[0], response_new[1]
-
 
 
 client_id = "_yVwgo9pbZN4s883GVMXyg"
@@ -39,33 +38,34 @@ class user_category:
     def repr(self):
         return self.type
 
+
 # class Restaurant:
 #     def __init__(self, name, businessID):
 #         self.name = name
 #         self.businessID = businessID
 
-# restaurants 
+# restaurants
 @app.route("/", methods=["GET", "POST"])
 def index():
     testLocation = "toronto"
-    category = "Korean"
+    category = ""
     city = None
-    
+
     if request.method == "POST":
-    
+
         city = request.form.get("city")
         selection = request.form.get("type")
         S = user_category(selection, testLocation)
         category = S.repr()
-    
-    if city is not None:
+
+    if city:
         PARAMETERS_YELP = {
             "term": category,
             "limit": 50,
             "offset": 50,
             "radius": 10000,
-            "location": city,  
-        } 
+            "location": city,
+        }
     else:
         PARAMETERS_YELP = {
             "term": category,
@@ -76,11 +76,13 @@ def index():
             "longitude": long,
         }
 
-    response = requests.get(url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP)
+    response = requests.get(
+        url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
+    )
     business_data = response.json()
     print(business_data)
 
-    return render_template (
+    return render_template(
         "index.html",
         title="StreetEats",
         url=os.getenv("URL"),
