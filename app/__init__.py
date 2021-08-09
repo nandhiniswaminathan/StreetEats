@@ -16,7 +16,9 @@ app = Flask(__name__)
 lat, long = api_run1()
 ENDPOINT_YELP, HEADERS_YELP = apiYelp()
 
-app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
@@ -41,12 +43,15 @@ def index():
     testLocation = "toronto"
     category = ""
     city = None
+    like = None
 
     if request.method == "POST":
         city = request.form.get("city")
         selection = request.form.get("type")
         S = user_category(selection, testLocation)
         category = S.repr()
+
+        like = request.form.get("like")
 
     if city:
         PARAMETERS_YELP = {
@@ -77,8 +82,18 @@ def index():
         title="StreetEats",
         url=os.getenv("URL"),
         data=business_data,
+        state=like,
     )
-    # return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
+
+
+""" @app.route("/likeBusiness", methods=["POST", "GET"])
+def likeBusiness():
+    rand = True
+    if request.method == "GET":
+        print("Hello")
+
+    return render_template("index.html", state=rand, data="nothing") """
+
 
 # create health end point
 @app.route("/health")
@@ -106,7 +121,7 @@ def register():
             new_user = UserModel(username, generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            #Return login page upon successful registration
+            # Return login page upon successful registration
             return render_template("login.html")
         else:
             return error, 418
@@ -118,6 +133,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     from .db import UserModel
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -130,7 +146,7 @@ def login():
             error = "Incorrect password."
 
         if error is None:
-            #Return home page upon successful registration, assuming it's "index.html"
+            # Return home page upon successful registration, assuming it's "index.html"
             return index()
         else:
             return error, 418

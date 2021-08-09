@@ -2,30 +2,53 @@
 <html lang="en">
 
 <body>
-<h1>StreetEats</h1>
+    <h1>StreetEats</h1>
 
-<form action="/" method="POST">
-<input class="input" type="text" id="type" name="type" placeholder="Category" />
-<input class="input" type="text" id="city" name="city" placeholder="city" />
-<input type="submit" class="btn" id="submit" name="submit" value="search" />
-</form>
-
-
+    <form action="/" method="POST">
+        <input class="input" type="text" id="type" name="type" placeholder="Category" />
+        <input class="input" type="text" id="city" name="city" placeholder="city" />
+        <input type="submit" class="btn" id="submit" name="submit" value="search" />
+    </form>
 
 
+    {% block content %}
+    <div>
+        {% for entry in data["businesses"] %}
+        <p>{{entry['name']}}
+        <form action='/' method="POST">
+            <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
+        </form>
+        </p>
+
+        {% if state %}
+        <p>{{entry['id']}}</p>
+
+        {% endif %}
 
 
-{% block content %}
-<div>
-    {% for entry in data["businesses"] %}
-        <p>{{entry['name']}}</p>   
-        <span>Rating: {{entry['rating']}}</span> 
+        <span>Rating: {{entry['rating']}}</span>
         <span>Price: {{entry['price']}}</span> <!-- user "distance" for distance from user to place -->
-    
-    {% endfor %}
-</div>
-{% endblock content %}
 
+        {% endfor %}
+    </div>
+    {% endblock content %}
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type=text/javascript>
+    $(function() { //when button is clicked it sends get request to function likeBusiness
+        $('#like').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/', 
+                function(data) {
+                    //this does nothing
+                });
+            return false; 
+        });
+    });
+
+</script> -->
 
 </body>
+
 </html>
