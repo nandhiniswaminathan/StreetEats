@@ -11,7 +11,8 @@ def api_run1():
     ENDPOINT_IP = "https://api.ipify.org?format=json"  # method: GET
     response_ip = requests.get(url=ENDPOINT_IP)
     ip = response_ip.json()["ip"]
-    print(ip)
+
+    print("Ip: ", ip)
 
     # API #2
     ENDPOINT_LOC = f"https://ipinfo.io/{ip}?token=e5705a55652e77"  # method: GET
