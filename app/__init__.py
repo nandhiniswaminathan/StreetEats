@@ -11,8 +11,6 @@ from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-
-
 app = Flask(__name__)
 
 lat, long = api_run1()
@@ -32,6 +30,8 @@ app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://{user}:{passwd}@{h
 	port=5432,
 	table=os.getenv('POSTGRES_DB'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 class user_category:
     def __init__(self, type, location):
@@ -83,7 +83,8 @@ def index():
         url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
     )
     business_data = response.json()
-    # print(business_data)
+    print (response.content)
+    print(business_data)
 
     return render_template(
         "index.html",
@@ -130,11 +131,11 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    from .db import UserModel
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         error = None
+        from .db import UserModel
         user = UserModel.query.filter_by(username=username).first()
 
         if user is None:
