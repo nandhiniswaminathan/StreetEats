@@ -11,14 +11,27 @@ from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+
+
 app = Flask(__name__)
 
 lat, long = api_run1()
 ENDPOINT_YELP, HEADERS_YELP = apiYelp()
+print("Okay")
+print(lat)
+print(long)
+print(ENDPOINT_YELP)
+print(HEADERS_YELP)
+#app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
+#app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
+app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://{user}:{passwd}@{host}:{port}/{table}'.format(
+	user=os.getenv('POSTGRES_USER'),
+	passwd=os.getenv('POSTGRES_PASSWORD'),
+	host=os.getenv('POSTGRES_HOST'),
+	port=5432,
+	table=os.getenv('POSTGRES_DB'))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 
 class user_category:
     def __init__(self, type, location):
