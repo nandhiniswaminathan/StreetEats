@@ -75,7 +75,6 @@ def index():
         url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
     )
     business_data = response.json()
-    # print(business_data)
 
     return render_template(
         "index.html",
@@ -86,13 +85,13 @@ def index():
     )
 
 
-""" @app.route("/likeBusiness", methods=["POST", "GET"])
+@app.route("/like-business", methods=["POST"])
 def likeBusiness():
-    rand = True
-    if request.method == "GET":
-        print("Hello")
+    business_id = request.form.get("business-id")
 
-    return render_template("index.html", state=rand, data="nothing") """
+    # Save to db or something
+
+    return '{"id":"%s","success":true}' % business_id
 
 
 # create health end point
