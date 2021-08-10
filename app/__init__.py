@@ -66,10 +66,20 @@ def index():
             "longitude": long,
         }
 
+#check if it is already in the database
+# if it is in , return it from db
+# if not, add to database and return to user 
+
     response = requests.get(
         url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
     )
     business_data = response.json()
+
+    # choose list
+    # is business id already in db-list?
+    # if it is, do nothing
+    # if not, add to database 
+
     # print(business_data)
 
     return render_template(
