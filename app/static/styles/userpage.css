@@ -1,0 +1,15 @@
+body {
+    background-color: #dff9fb;
+}
+
+.content {
+    padding-top: 5vh;
+    padding-right: 3vw;
+    padding-bottom: 5vh;
+    padding-left: 3vw;
+    margin: auto;
+}
+
+.extend {
+    height: 100vh;
+}

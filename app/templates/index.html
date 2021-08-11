@@ -57,7 +57,8 @@
         </p> 
     <br>
         <div style="text-align:center">
-            <button class="btn btn-primary" type="submit" href="/register">Register Here</button>
+            <a href="/register" class="btn btn-primary">Register Here</a>
+            </form>
         </div>
     <br>
     </div>
@@ -73,18 +74,26 @@
                 <input id ="city" name ="city" type="text" class="form-control" id="floatingInput" placeholder="City">
                 <label for="floatingInput">Location (City)</label>
             </div>
-            <button class="btn btn-primary" type="submit" id="submit" name="submit" value="search">Search</button>
-            <br><br><br><br><br><br><br><br><br>
+            <a href ="#search-results">
+                <button class="btn btn-primary" type="submit" id="submit" name="submit" value="search">Search</button>
+            </a>
+            <br><br>
         </form>
     </div>
 </div>
 
 
+{% if section %}
+<script>
+    $(function() {
+       $("html, body").animate({ scrollTop: $("#{{ searchresults }}").offset().top }, 500);
+    });
+</script>
+{% endif %}
 
 
 
-{% block content %}
-<div class="search-results">
+<div class="searchresults">
     <h1>Search results: </h1>
     <br>
 
@@ -141,7 +150,7 @@
     {% endfor %}
 
 </div>
-{% endblock content %}
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.5.1/dist/ionicons.js"></script>

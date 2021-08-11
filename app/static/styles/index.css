@@ -1,5 +1,10 @@
 .homepage {
-    background-color: #bdf9fe;
+    background-color: #dff9fb;
+    height: 100vh;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 img {
@@ -38,17 +43,18 @@ img {
 .paddingl {
     padding-top: 1vh;
     padding-right: 15vw;
-    padding-bottom: 2vh;
     padding-left: 15vw;
-    background-color: #bdf9fe;
+    background-color: #dff9fb;
+    height: 100vh;
 
 }
 
-.search-results {
+.searchresults {
     padding-top: 3vh;
     padding-right: 15vw;
     padding-bottom: 2vh;
     padding-left: 15vw;
+    background-color: white!important;
     
 }
 

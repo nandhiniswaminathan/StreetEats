@@ -95,6 +95,12 @@ def index():
 def check():
     return "Working"
 
+@app.route("/userpage")
+def userpage():
+    return render_template(
+        "userpage.html", title="My Account", url=os.getenv("URL")
+    )
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
