@@ -66,17 +66,34 @@ def index():
             "longitude": long,
         }
 
+#check if it is already in the database
+# if it is in , return it from db
+# if not, add to database and return to user 
+
     response = requests.get(
         url=ENDPOINT_YELP, params=PARAMETERS_YELP, headers=HEADERS_YELP
     )
     business_data = response.json()
 
+
+    # choose list
+    # is business id already in db-list?
+    # if it is, do nothing
+    # if not, add to database 
+
+    # print(business_data)
+
+    # if logged in, do this (figure out user session)
     return render_template(
         "index.html",
         title="StreetEats",
         url=os.getenv("URL"),
         data=business_data,
     )
+
+
+    # if not logged in, do this
+    # return render_template("userhomepage.html", title="StreetEats", url=os.getenv("URL"), data=business_data,)
 
 
 @app.route("/like-business", methods=["POST"])
@@ -98,10 +115,35 @@ def restaurant(name):  # send print id. send id
     return render_template("restaurant.html", name=name, reviews=review_data)
 
 
+
 # create health end point
 @app.route("/health")
 def check():
     return "Working"
+
+@app.route("/restaurantdetails")
+def restodetails():
+    return render_template(
+        "restodetails.html", title="Restaurant", url=os.getenv("URL")
+    )
+
+@app.route("/userhomepage")
+def userhomepage():
+    return render_template(
+        "userhomepage.html", title="Homepage", url=os.getenv("URL")
+    )
+
+@app.route("/userpage")
+def userpage():
+    return render_template(
+        "userpage.html", title="My Account", url=os.getenv("URL")
+    )
+
+@app.route("/listpage")
+def listpage():
+    return render_template(
+        "listpage.html", title="My List", url=os.getenv("URL")
+    )
 
 
 @app.route("/register", methods=["GET", "POST"])

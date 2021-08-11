@@ -36,13 +36,19 @@ class UserModel(db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
+listscontents = db.Table('listscontents',
+    db.Column('list_id_fk', db.Integer, db.ForeignKey('lists.list_id')),
+    db.Column('business_id_fk', db.Integer, db.ForeignKey('businesses.business_id')))
+
 class Lists(db.Model):
     __tablename__ = "lists"
     #Add id number of user who owns list, name of list, list_id number columns
     list_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     list_name = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
-    businesses = db.relationship("BusinessList", backref="Business_ListID")
+    listContents = db.relationship("BusinessList", secondary=listscontents,
+                                backref = db.backref('lists', lazy='dynamic'),
+                                lazy='dynamic')
     #List db has businesses that refers to BusinessList/businesses db
 
 ### Need Help with where / how to connect and assign attributes for each user here
@@ -62,7 +68,7 @@ class BusinessList(db.Model):
     #Add id number of list, name of business, business_id columns
     business_id = db.Column(db.Integer, primary_key=True)
     business_name = db.Column(db.String())
-    list_id = db.Column(db.Integer, db.ForeignKey("lists.list_id"))
+    # list_id = db.Column(db.Integer, db.ForeignKey("lists.list_id"))
 
 ### Need Help with where / how to connect and assign attributes for each business here
     def __init__(self, business_id, business_name, list_id):
