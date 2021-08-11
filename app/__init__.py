@@ -112,7 +112,7 @@ def restaurant(name):  # send print id. send id
     ENDPOINT_YELPR = yelpReviews(id)
     responseR = requests.get(url=ENDPOINT_YELPR, headers=HEADERS_YELP)
     review_data = responseR.json()
-    return render_template("restaurant.html", name=name, reviews=review_data)
+    return render_template("restodetails.html", name=name, reviews=review_data)
 
 
 
@@ -120,12 +120,6 @@ def restaurant(name):  # send print id. send id
 @app.route("/health")
 def check():
     return "Working"
-
-@app.route("/restaurantdetails")
-def restodetails():
-    return render_template(
-        "restodetails.html", title="Restaurant", url=os.getenv("URL")
-    )
 
 @app.route("/userhomepage")
 def userhomepage():

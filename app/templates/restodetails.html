@@ -6,8 +6,8 @@
     <div class="card mb-3">
         <img src="static/img/background-food.jpg" class="card-img-top" alt="...">
         <div class="card-body">
-        <h2 class="card-title">Restaurant name</h2>
-        <p class="card-text">Restaurant details: blah blah blah</p>
+        <h2 class="card-title">{{name}}</h2>
+        <p class="card-text">Restaurant details:</p>
         <br><br><br><br><br><br><br><br><br>
         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         
@@ -20,16 +20,18 @@
         <div class="card-body">
           <h2 class="card-title">Reviews</h2>
 
+          {% for data in reviews['reviews'] %}
           <div class="review-content">
             <div class="card mb-3">
                 <div class="card-body">
                 <h4 class="card-title">Review #1</h4>
-                <p class="card-text">description of review</p>
+                <p class="card-text">{{data['text']}}</p>
                 <br><br><br><br>
                 </div>
             </div>
-        </div>
-          
+          </div>
+          {% endfor %}
+
           
         </div>
     </div>

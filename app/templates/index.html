@@ -45,14 +45,6 @@
     </div>
 </nav>
 
-    <h1>StreetEats</h1>
-
-    <form action="/" method="POST">
-        <input class="input" type="text" id="type" name="type" placeholder="Category" />
-        <input class="input" type="text" id="city" name="city" placeholder="city" />
-        <input type="submit" class="btn" id="submit" name="submit" value="search" />
-    </form>
-
 
 <div class=homepage>
     <!-- <div style="background-image: url('static/img/background-food.jpg');"></div> -->
@@ -93,6 +85,7 @@
     </div>
 </div>
 
+{% block content %}
 
 {% if section %}
 <script>
@@ -102,39 +95,11 @@
 </script>
 {% endif %}
 
-    {% block content %}
-    <div>
-        {% for entry in data["businesses"] %}
-        <p>
-        <form action="{{ url_for('restaurant' ,name=entry['name']) }}" method="POST" class="id">
-            <!-- <button type="submit" style="border:none; background-color: transparent;"><a
-                    href="{{ url_for('restaurant' ,name=entry['name']) }}">{{entry['name']}}</a></button> -->
-            <button type=submit>{{entry['name']}}</button>
-            <input type="hidden" name="id" value="{{entry['id']}}" />
-        </form>
-
-
-        <!-- <form action='/like-busuiness' method="POST">
-                <input type="hidden" name="business-id" value="{{entry['id']}}" />
-                <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
-            </form> -->
-        <form action='/' method="POST" class="like-form">
-            <br />
-            Like Count: <span class="like-count">1</span>
-            <br />
-            <input type="hidden" name="business-id" value="{{entry['id']}}" />
-            <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
-        </form>
-        </p>
-
-        <span>Rating: {{entry['rating']}}</span>
-        <span>Price: {{entry['price']}}</span> <!-- user "distance" for distance from user to place -->
-
 
 <div class="searchresults">
     <h1>Search results: </h1>
     <br>
-
+    
     {% for entry in data["businesses"] %}
     <div class="card mb-3" style="max-width: 1050px;" style="max-height: 50%;">
         <div class="row g-0">
@@ -143,13 +108,26 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
+            
+            <form action="{{ url_for('restaurant' ,name=entry['name']) }}" method="POST" class="id">
               <h5 class="card-title">{{entry['name']}}</h5>
+              <button type=submit>{{entry['name']}}</button> 
+              <input type="hidden" name="id" value="{{entry['id']}}" />
+            </form>
+
               <p class="card-text">Rating: {{entry['rating']}}
                 <br> Price: {{entry['price']}}
                 <br> Phone: {{entry['phone']}}
                 <br> Address: {{entry['location.address1']}}
                 <br> 
-                <button class="card text-end">Add to list</button>
+                <form action='/' method="POST" class="like-form">
+                    <br />
+                    Like Count: <span class="like-count">1</span>
+                    <br />
+                    <input type="hidden" name="business-id" value="{{entry['id']}}" />
+                    <button class="card text-end" type="submit" name="like" id="like" value="like">Add to list </button>
+                </form>
+
               <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
             <div class="card-footer">
@@ -161,12 +139,9 @@
 
 
     {% endfor %}
+    
+{% endblock %}
 
-</div>
-
-        {% endfor %}
-    </div>
-    {% endblock content %}
 
 
 
