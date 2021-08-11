@@ -27,6 +27,7 @@
 
 
 <body>
+
 <nav class="navbar sticky-top navbar-light bg-light">
     <a class="navbar-brand" href="/">
         <img src="static/img/logo.jpg" height="50" class="padding-logo">
@@ -44,12 +45,22 @@
     </div>
 </nav>
 
+    <h1>StreetEats</h1>
+
+    <form action="/" method="POST">
+        <input class="input" type="text" id="type" name="type" placeholder="Category" />
+        <input class="input" type="text" id="city" name="city" placeholder="city" />
+        <input type="submit" class="btn" id="submit" name="submit" value="search" />
+    </form>
+
+
 <div class=homepage>
     <!-- <div style="background-image: url('static/img/background-food.jpg');"></div> -->
     <div>
         <img src="static/img/logo-black.jpg" class="center-logo">
         <br>
     </div>
+
 
     <div>
         <p style="text-align:center">Search restaurants in a location you want or near your current location! <br>
@@ -91,6 +102,33 @@
 </script>
 {% endif %}
 
+    {% block content %}
+    <div>
+        {% for entry in data["businesses"] %}
+        <p>
+        <form action="{{ url_for('restaurant' ,name=entry['name']) }}" method="POST" class="id">
+            <!-- <button type="submit" style="border:none; background-color: transparent;"><a
+                    href="{{ url_for('restaurant' ,name=entry['name']) }}">{{entry['name']}}</a></button> -->
+            <button type=submit>{{entry['name']}}</button>
+            <input type="hidden" name="id" value="{{entry['id']}}" />
+        </form>
+
+
+        <!-- <form action='/like-busuiness' method="POST">
+                <input type="hidden" name="business-id" value="{{entry['id']}}" />
+                <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
+            </form> -->
+        <form action='/' method="POST" class="like-form">
+            <br />
+            Like Count: <span class="like-count">1</span>
+            <br />
+            <input type="hidden" name="business-id" value="{{entry['id']}}" />
+            <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
+        </form>
+        </p>
+
+        <span>Rating: {{entry['rating']}}</span>
+        <span>Price: {{entry['price']}}</span> <!-- user "distance" for distance from user to place -->
 
 
 <div class="searchresults">
@@ -126,9 +164,61 @@
 
 </div>
 
+        {% endfor %}
+    </div>
+    {% endblock content %}
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type=text/javascript>
+
+        console.log(document.getElementsByClassName('id').innerText)
+    // var ids = $(".idT")
+    // // var element = idT[5]
+    // console.log(ids)
+
+        $('.like-form').submit(function (e) {
+            e.preventDefault();
+            // var formData = new FormData(e.target)
+            // console.log(formData)
+            // var businessId = formData.get("business-id")
+
+            $.ajax({
+                url:"/like-business",
+                type:"POST",
+                cache:false,
+                data:$(e.target).serialize(),
+                success: function (data) {
+                    console.log(data);
+                    var likeCountSpan = $(e.target).find('.like-count')[0]
+                    var newLikeCount = Number(likeCountSpan.innerText) + 1
+                    likeCountSpan.innerText = `${newLikeCount}`
+                }
+                });
+        })
+
+       /*  $('.idForm').submit(function (e) {
+            e.preventDefault();
+      
+            $.ajax({
+                url:"/restaurant/<name>",
+                type:"POST",
+                cache:false,
+                data:$(e.target).serialize(),
+                success: function (data) {
+                    console.log(data);
+                   
+                }
+                });
+        }) */
+
+    
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://unpkg.com/ionicons@5.5.1/dist/ionicons.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

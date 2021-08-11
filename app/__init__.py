@@ -4,19 +4,25 @@ from dotenv import load_dotenv
 import requests
 from flask import request
 from . import api
-from app.api import api_run1
+from app.api import api_location
 from app.api import apiYelp
+from app.api import yelpReviews
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+load_dotenv()
 app = Flask(__name__)
 
-lat, long = api_run1()
+
+lat, long = api_location()
 ENDPOINT_YELP, HEADERS_YELP = apiYelp()
 
-app.config[ "SQLALCHEMY_DATABASE_URI" ] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
+
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgresql://postgres:pass@localhost:5432/streeteatsdb"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
@@ -27,12 +33,6 @@ class user_category:
 
     def repr(self):
         return self.type
-
-
-# class Restaurant:
-#     def __init__(self, name, businessID):
-#         self.name = name
-#         self.businessID = businessID
 
 
 # restaurants
@@ -75,6 +75,7 @@ def index():
     )
     business_data = response.json()
 
+
     # choose list
     # is business id already in db-list?
     # if it is, do nothing
@@ -90,8 +91,30 @@ def index():
         data=business_data,
     )
 
+
     # if not logged in, do this
     # return render_template("userhomepage.html", title="StreetEats", url=os.getenv("URL"), data=business_data,)
+
+
+@app.route("/like-business", methods=["POST"])
+def likeBusiness():
+    business_id = request.form.get("business-id")
+
+    # Save to db or something
+
+    return '{"id":"%s","success":true}' % business_id
+
+
+@app.route("/restaurant/<name>", methods=["POST"])
+def restaurant(name):  # send print id. send id
+
+    id = request.form.get("id")
+    ENDPOINT_YELPR = yelpReviews(id)
+    responseR = requests.get(url=ENDPOINT_YELPR, headers=HEADERS_YELP)
+    review_data = responseR.json()
+    return render_template("restaurant.html", name=name, reviews=review_data)
+
+
 
 # create health end point
 @app.route("/health")
@@ -143,7 +166,7 @@ def register():
             new_user = UserModel(username, generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            #Return login page upon successful registration
+            # Return login page upon successful registration
             return render_template("login.html")
         else:
             return error, 418
@@ -155,6 +178,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     from .db import UserModel
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -167,7 +191,7 @@ def login():
             error = "Incorrect password."
 
         if error is None:
-            #Return home page upon successful registration, assuming it's "index.html"
+            # Return home page upon successful registration, assuming it's "index.html"
             return index()
         else:
             return error, 418
