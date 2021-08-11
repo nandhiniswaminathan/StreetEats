@@ -10,6 +10,13 @@ body {
     margin: auto;
 }
 
+.review-content {
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    margin: auto;
+
+}
+
 .extend {
     height: 100vh;
 }

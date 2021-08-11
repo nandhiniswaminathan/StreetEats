@@ -88,17 +88,36 @@ def index():
         url=os.getenv("URL"),
         data=business_data,
     )
-    # return render_template("index.html", title="StreetEats", url=os.getenv("URL"))
+
+    # return render_template("userhomepage.html", title="StreetEats", url=os.getenv("URL"), data=business_data,)
 
 # create health end point
 @app.route("/health")
 def check():
     return "Working"
 
+@app.route("/restaurantdetails")
+def restodetails():
+    return render_template(
+        "restodetails.html", title="Restaurant", url=os.getenv("URL")
+    )
+
+@app.route("/userhomepage")
+def userhomepage():
+    return render_template(
+        "userhomepage.html", title="Homepage", url=os.getenv("URL")
+    )
+
 @app.route("/userpage")
 def userpage():
     return render_template(
         "userpage.html", title="My Account", url=os.getenv("URL")
+    )
+
+@app.route("/listpage")
+def listpage():
+    return render_template(
+        "listpage.html", title="My List", url=os.getenv("URL")
     )
 
 

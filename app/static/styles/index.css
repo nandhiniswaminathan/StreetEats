@@ -49,6 +49,15 @@ img {
 
 }
 
+.reg-paddingl {
+    padding-top: 3vh;
+    padding-right: 2vw;
+    padding-bottom: 2vh;
+    padding-left: 2vw;
+    background-color: white!important;
+
+}
+
 .searchresults {
     padding-top: 3vh;
     padding-right: 15vw;
@@ -56,6 +65,13 @@ img {
     padding-left: 15vw;
     background-color: white!important;
     
+}
+
+.listpage {
+    padding-top: 3vh;
+    padding-right: 15vw;
+    padding-bottom: 2vh;
+    padding-left: 15vw;
 }
 
 
