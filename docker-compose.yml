@@ -17,10 +17,11 @@ services:
     restart: always
     env_file:
       - .env
+      
   nginx:
     image: jonasal/nginx-certbot:latest
     restart: unless-stopped
-    env file:
+    env_file:
       - ./nginx-certbot.env
     ports:
       - 80:80
