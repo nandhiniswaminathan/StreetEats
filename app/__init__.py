@@ -4,17 +4,21 @@ from dotenv import load_dotenv
 import requests
 from flask import request
 from . import api
-from app.api import api_run1
+from app.api import api_location
 from app.api import apiYelp
+from app.api import yelpReviews
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+load_dotenv()
 app = Flask(__name__)
 
-lat, long = api_run1()
+
+lat, long = api_location()
 ENDPOINT_YELP, HEADERS_YELP = apiYelp()
+
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
@@ -31,27 +35,18 @@ class user_category:
         return self.type
 
 
-# class Restaurant:
-#     def __init__(self, name, businessID):
-#         self.name = name
-#         self.businessID = businessID
-
-
 # restaurants
 @app.route("/", methods=["GET", "POST"])
 def index():
     testLocation = "toronto"
     category = ""
     city = None
-    like = None
 
     if request.method == "POST":
         city = request.form.get("city")
         selection = request.form.get("type")
         S = user_category(selection, testLocation)
         category = S.repr()
-
-        like = request.form.get("like")
 
     if city:
         PARAMETERS_YELP = {
@@ -81,7 +76,6 @@ def index():
         title="StreetEats",
         url=os.getenv("URL"),
         data=business_data,
-        state=like,
     )
 
 
@@ -92,6 +86,16 @@ def likeBusiness():
     # Save to db or something
 
     return '{"id":"%s","success":true}' % business_id
+
+
+@app.route("/restaurant/<name>", methods=["POST"])
+def restaurant(name):  # send print id. send id
+
+    id = request.form.get("id")
+    ENDPOINT_YELPR = yelpReviews(id)
+    responseR = requests.get(url=ENDPOINT_YELPR, headers=HEADERS_YELP)
+    review_data = responseR.json()
+    return render_template("restaurant.html", name=name, reviews=review_data)
 
 
 # create health end point

@@ -5,7 +5,7 @@ import requests
 from flask import request
 
 
-def api_run1():
+def api_location():
 
     # API #1
     ENDPOINT_IP = "https://api.ipify.org?format=json"  # method: GET
@@ -25,9 +25,15 @@ def api_run1():
 
 
 def apiYelp():
-    client_id = "_yVwgo9pbZN4s883GVMXyg"
+    client_id = os.getenv("CLIENTID")
     API_KEY_YELP = os.getenv("APIKEYYELP")
     ENDPOINT_YELP = "https://api.yelp.com/v3/businesses/search"  # method: GET
     HEADERS_YELP = {"Authorization": "bearer %s" % API_KEY_YELP}
 
     return ENDPOINT_YELP, HEADERS_YELP
+
+
+def yelpReviews(id):
+    ENDPOINT_YELPR = f"https://api.yelp.com/v3/businesses/{id}/reviews"  # method GET
+
+    return ENDPOINT_YELPR

@@ -14,8 +14,15 @@
     {% block content %}
     <div>
         {% for entry in data["businesses"] %}
-        <p>{{entry['name']}}
-            <!-- <form action='/like-busuiness' method="POST">
+        <p>
+        <form action="{{ url_for('restaurant' ,name=entry['name']) }}" method="POST" class="id">
+            <!-- <button type="submit" style="border:none; background-color: transparent;"><a
+                    href="{{ url_for('restaurant' ,name=entry['name']) }}">{{entry['name']}}</a></button> -->
+            <button type=submit>{{entry['name']}}</button>
+            <input type="hidden" name="id" value="{{entry['id']}}" />
+        </form>
+
+        <!-- <form action='/like-busuiness' method="POST">
                 <input type="hidden" name="business-id" value="{{entry['id']}}" />
                 <button class="btn" type="submit" name="like" id="like" value="like">Like </button>
             </form> -->
@@ -28,12 +35,6 @@
         </form>
         </p>
 
-        {% if state %}
-        <p class="idT">{{entry['id']}}</p>
-        {% else %}
-        <p class="idT">YES</p>
-        {% endif %}
-
         <span>Rating: {{entry['rating']}}</span>
         <span>Price: {{entry['price']}}</span> <!-- user "distance" for distance from user to place -->
 
@@ -44,10 +45,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type=text/javascript>
-   // const ids = [document.getElementById("idT").innerHTML]
 
-   /*NOTES: */
-
+        console.log(document.getElementsByClassName('id').innerText)
     // var ids = $(".idT")
     // // var element = idT[5]
     // console.log(ids)
@@ -72,28 +71,21 @@
                 });
         })
 
-   /*  $(function() { //when button is clicked it sends get request to function likeBusiness
-        $('#like').submit(function(e) {
-            e.preventDefault(); 
-
+       /*  $('.idForm').submit(function (e) {
+            e.preventDefault();
+      
             $.ajax({
-                url:"__init__.py",
+                url:"/restaurant/<name>",
                 type:"POST",
                 cache:false,
-                data:$("#like").serialize(),
+                data:$(e.target).serialize(),
                 success: function (data) {
-                        console.log("helllo");
+                    console.log(data);
+                   
                 }
                 });
+        }) */
 
-             $.getJSON('/', 
-                function(data) {
-                    //this does nothing
-                });
-            return false;  
-        });
-    }); 
-    */
     
 </script>
 
