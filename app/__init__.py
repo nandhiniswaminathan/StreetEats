@@ -82,6 +82,7 @@ def index():
 
     # print(business_data)
 
+    # if logged in, do this (figure out user session)
     return render_template(
         "index.html",
         title="StreetEats",
@@ -89,6 +90,7 @@ def index():
         data=business_data,
     )
 
+    # if not logged in, do this
     # return render_template("userhomepage.html", title="StreetEats", url=os.getenv("URL"), data=business_data,)
 
 # create health end point
