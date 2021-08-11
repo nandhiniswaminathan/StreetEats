@@ -1,4 +1,4 @@
-body {
+.homepage {
     background-color: #bdf9fe;
 }
 
@@ -8,7 +8,7 @@ img {
 }
 
 .bg-light {
-    background-color: #ffffff!important;
+    background-color:white!important;
 }
 
 .navbar {
@@ -16,9 +16,11 @@ img {
     padding-bottom: 1rem;
 }
 
-btn-primary {
-    background-color: #22c1ff!important;
+.btn-primary {
+    background-color: #22c1ff;
+    border-color: transparent;
 }
+
 
 .nav-link {
     position: left;
@@ -31,7 +33,6 @@ btn-primary {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 35%;
 }
 
 .paddingl {
@@ -39,7 +40,19 @@ btn-primary {
     padding-right: 15vw;
     padding-bottom: 2vh;
     padding-left: 15vw;
+    background-color: #bdf9fe;
+
 }
+
+.search-results {
+    padding-top: 3vh;
+    padding-right: 15vw;
+    padding-bottom: 2vh;
+    padding-left: 15vw;
+    
+}
+
+
 
 .padding-logo {
     padding-left: 2vw;
