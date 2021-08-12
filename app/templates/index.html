@@ -18,7 +18,8 @@
     
     <link rel='icon' href='./static/img/codeIcon.svg' type='image/x-icon' />
 
-    <link lang='sass' rel="stylesheet" href="./static/styles/index.css">
+    <link lang='sass' rel="stylesheet" href="/static/styles/index.css">
+    <link lang='sass' rel="stylesheet" href="/static/styles/userpage.css">
 
     <title>{{ title }}</title>
     
@@ -47,11 +48,12 @@
 
 
 <div class=homepage>
-    <!-- <div style="background-image: url('static/img/background-food.jpg');"></div> -->
-    <div>
+    <div class="background"> 
+    <div class=center-logo>
         <img src="static/img/logo-black.jpg" class="center-logo">
         <br>
     </div>
+    
 
 
     <div>
@@ -77,12 +79,14 @@
                 <input id ="city" name ="city" type="text" class="form-control" id="floatingInput" placeholder="City">
                 <label for="floatingInput">Location (City)</label>
             </div>
-            <a href ="#search-results">
+            <a href ="#searchresults">
                 <button class="btn btn-primary" type="submit" id="submit" name="submit" value="search">Search</button>
             </a>
             <br><br>
         </form>
     </div>
+    </div>
+
 </div>
 
 {% block content %}
@@ -96,7 +100,8 @@
 {% endif %}
 
 
-<div class="searchresults">
+
+<div class="searchresults" id="searchresults">
     <h1>Search results: </h1>
     <br>
     
@@ -104,28 +109,28 @@
     <div class="card mb-3" style="max-width: 1050px;" style="max-height: 50%;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="{{entry['image_url']}}" class="img-fluid rounded-start" alt="...">
+            <div class="photo-results">
+                <img src="{{entry['image_url']}}" class="img-fluid rounded-start" alt="...">
+            </div>
           </div>
           <div class="col-md-8">
             <div class="card-body">
             
             <form action="{{ url_for('restaurant' ,name=entry['name']) }}" method="POST" class="id">
-              <h5 class="card-title">{{entry['name']}}</h5>
-              <button type=submit>{{entry['name']}}</button> 
+              <button class="look-like-link" type=submit>{{entry['name']}}</button> 
               <input type="hidden" name="id" value="{{entry['id']}}" />
             </form>
 
-              <p class="card-text">Rating: {{entry['rating']}}
-                <br> Price: {{entry['price']}}
-                <br> Phone: {{entry['phone']}}
-                <br> Address: {{entry['location.address1']}}
-                <br> 
+              <p class="card-text"><strong>Rating: </strong>{{entry['rating']}}
+                <br> <strong>Price: </strong>{{entry['price']}}
+                <br> <strong>Phone: </strong>{{entry['display_phone']}}
+                <br> <strong>Address: </strong>{{entry['location']['address1']}}, {{entry['location']['city']}}, {{entry['location']['state']}} {{entry['location']['zip_code']}}, {{entry['location']['country']}}
                 <form action='/' method="POST" class="like-form">
-                    <br />
-                    Like Count: <span class="like-count">1</span>
-                    <br />
-                    <input type="hidden" name="business-id" value="{{entry['id']}}" />
-                    <button class="card text-end" type="submit" name="like" id="like" value="like">Add to list </button>
+                    <div style="text-align:right">
+                        Like Count: <span class="like-count">1</span>
+                        <input type="hidden" name="business-id" value="{{entry['id']}}" />
+                        <button class="btn btn-primary" type="submit" name="like" id="like" value="like">Add to list</button>
+                    </div>
                 </form>
 
               <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
