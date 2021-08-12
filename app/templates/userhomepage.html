@@ -1,0 +1,82 @@
+{% extends "userview.html" %}
+
+{% block content %}
+
+<div class=homepage>
+    <!-- <div style="background-image: url('static/img/background-food.jpg');"></div> -->
+    <div>
+        <img src="static/img/logo-black.jpg" class="center-logo">
+        <br>
+    </div>
+
+    <div>
+        <p style="text-align:center">Search restaurants in a location you want or near your current location! <br>
+        Save your favourite restaurant to your lists! <br>
+        </p> 
+    <br>
+    </div>
+    
+    <div class="paddingl">
+        <form action="/" method="POST">
+            <div class="form-floating mb-3">
+                <input id ="type" name ="type" type="text" class="form-control" id="floatingInput" placeholder="Category">
+                <label for="floatingInput">Category</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input id ="city" name ="city" type="text" class="form-control" id="floatingInput" placeholder="City">
+                <label for="floatingInput">Location (City)</label>
+            </div>
+            <a href ="#search-results">
+                <button class="btn btn-primary" type="submit" id="submit" name="submit" value="search">Search</button>
+            </a>
+            <br><br>
+        </form>
+    </div>
+</div>
+
+
+{% if section %}
+<script>
+    $(function() {
+       $("html, body").animate({ scrollTop: $("#{{ searchresults }}").offset().top }, 500);
+    });
+</script>
+{% endif %}
+
+
+
+<div class="searchresults">
+    <h1>Search results: </h1>
+    <br>
+
+    {% for entry in data["businesses"] %}
+    <div class="card mb-3" style="max-width: 1050px;" style="max-height: 50%;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{entry['image_url']}}" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{entry['name']}}</h5>
+              <p class="card-text">Rating: {{entry['rating']}}
+                <br> Price: {{entry['price']}}
+                <br> Phone: {{entry['phone']}}
+                <br> Address: {{entry['location.address1']}}
+                <br> 
+                <button class="card text-end">Add to list</button>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Distance from you: {{entry['distance']}} metres</small>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
