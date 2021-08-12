@@ -5,5 +5,3 @@ flask.sqlite
 venv
 python3-virtualenv/
 .DS_Store
-nginx-certbot.env
-user_conf.d
