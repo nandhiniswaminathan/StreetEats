@@ -37,3 +37,9 @@ def yelpReviews(id):
     ENDPOINT_YELPR = f"https://api.yelp.com/v3/businesses/{id}/reviews"  # method GET
 
     return ENDPOINT_YELPR
+
+
+def yelpBusinessInfo(id):
+    ENDPOINT_YELPB = f"https://api.yelp.com/v3/businesses/{id}"  # method GET
+
+    return ENDPOINT_YELPB

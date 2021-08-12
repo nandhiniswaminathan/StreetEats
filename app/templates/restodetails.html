@@ -6,50 +6,50 @@
     <div class="card mb-3">
         <img src="{{image_url}}" class="card-img-top" alt="...">
         <div class="card-body">
-        <h2 class="card-title">{{name}}</h2>
-        <p class="card-text">
-                <br> <strong>Rating: </strong> {{rating}}
-                <br> <strong>Price: </strong> {{price}}
-                <br> <strong>Phone: </strong> {{display_phone}}
-                <br> <strong>Address: </strong> {{location}}
-                <br> <strong>Hours: </strong> {{hours}}
-        </p>
+            <h2 class="card-title">{{name}}</h2>
 
-        <br><br><br><br><br><br><br><br><br>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        
+            <p class="card-text">Restaurant details:</p>
+            <p>Price: {{businessData['price']}}</p>
+            <p>Rating: {{businessData['rating']}}</p>
+            <p>Services: {{businessData['transactions']}}</p>
+            <p>Address: {{businessData['location']}}</p>
+
+            <br><br><br><br><br><br><br><br><br>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
         </div>
     </div>
 </div>
+
 
 <div class="content">
     <div class="card mb-3">
         <div class="card-body">
-          <h2 class="card-title">Reviews</h2>
+            <h2 class="card-title">Reviews</h2>
 
-          {% for data in reviews['reviews'] %}
-          <div class="review-content">
-            <div class="card mb-3">
-                <div class="card-body">
-                <h4 class="card-title">Review #1</h4>
-                <p class="card-text">
-                    Rating: {{data['rating']}}
-                    <br>{{data['text']}} <br><br>
-                    <br> Review by: {{data['user']['name']}}
+            {% for data in reviews['reviews'] %}
+            <div class="review-content">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">Review #1</h4>
+                        <p class="card-text">
+                            Rating: {{data['rating']}}
+                            <br>{{data['text']}} <br><br>
+                            <br> Review by: {{data['user']['name']}}
 
-                </p>
-                <br>
-                <p class="card-text"><small class="text-muted">Date reviewed: {{data['time_created']}}</small></p>
+                        </p>
+                        <br>
+                        <p class="card-text"><small class="text-muted">Date reviewed: {{data['time_created']}}</small>
+                        </p>
+                    </div>
                 </div>
-            </div>
-          </div>
-          {% endfor %}
+                {% endfor %}
 
-          
+
+            </div>
         </div>
     </div>
-</div>
 
 
 
-{% endblock %}
+    {% endblock %}
